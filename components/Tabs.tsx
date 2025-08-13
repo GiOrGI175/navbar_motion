@@ -1,26 +1,10 @@
 'use client';
 
-import { title } from 'process';
-import ExampleComponents from './ExampleComponents';
 import { useState } from 'react';
 import Tab from './Tab';
 import { AnimatePresence } from 'framer-motion';
 import Content from './Content';
-
-const TABS = [
-  {
-    title: 'Products',
-    Components: ExampleComponents,
-  },
-  {
-    title: 'Pricing',
-    Components: ExampleComponents,
-  },
-  {
-    title: 'Blog',
-    Components: ExampleComponents,
-  },
-].map((n, idx) => ({ ...n, id: idx + 1 }));
+import { TABS } from '@/common/tabs';
 
 export default function Tabs() {
   const [selected, setSelected] = useState<number | null>(null);
@@ -39,7 +23,7 @@ export default function Tabs() {
 
   return (
     <div
-      onMouseMove={() => handleSetSelected(null)}
+      onMouseLeave={() => handleSetSelected(null)}
       className='relative flex h-fit gap-2'
     >
       {TABS.map((item) => {

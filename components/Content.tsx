@@ -1,6 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Bridge from './Bridge';
+import { TABS } from '@/common/tabs';
+import Nub from './Nub';
 
 type ContentPropsT = {
   selected: number | null;
@@ -8,5 +11,44 @@ type ContentPropsT = {
 };
 
 export default function Content({ selected, dir }: ContentPropsT) {
-  return <motion.div className='w-24 h-24 bg-red-800'></motion.div>;
+  return (
+    <motion.div
+      id='overlay-content'
+      initial={{
+        opacity: 0,
+        y: 8,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      exit={{
+        opacity: 0,
+        y: 8,
+      }}
+      className='absolute left-0 top-[calc(100%_+_24px)] w-96 rounded-lg border border-neutral-600 bg-gradient-to-b from-neutral-900 via-neutral-900 to-neutral-800 p-4'
+    >
+      <Bridge />
+      <Nub selected={selected} />
+
+      {TABS.map((item) => {
+        return (
+          <div className='overflow-hidden' key={item.id}>
+            {selected === item.id && (
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: dir === 'l' ? 100 : dir === 'r' ? -100 : 0,
+                }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+              >
+                <item.Components />
+              </motion.div>
+            )}
+          </div>
+        );
+      })}
+    </motion.div>
+  );
 }
